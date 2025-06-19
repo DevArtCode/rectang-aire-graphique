@@ -49,7 +49,7 @@ const Index = () => {
             </h1>
           </div>
           <p className="text-gray-600 text-lg">
-            Méthode des rectangles avec visualisation graphique (jusqu'à 10 000 rectangles)
+            Méthode des rectangles avec visualisation graphique (jusqu'à 1 000 rectangles)
           </p>
         </header>
 

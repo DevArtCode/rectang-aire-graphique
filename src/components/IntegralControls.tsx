@@ -27,6 +27,14 @@ export const IntegralControls = ({
   onKeyboardInput,
 }: IntegralControlsProps) => {
   const keyboardButtons = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", ".", "-"];
+  const constantButtons = [
+    { label: "π", value: "3.14159265359" },
+    { label: "e", value: "2.71828182846" },
+    { label: "φ", value: "1.61803398875" },
+    { label: "e²", value: "7.38905609893" },
+    { label: "π²", value: "9.86960440109" },
+    { label: "√2", value: "1.41421356237" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -63,9 +71,9 @@ export const IntegralControls = ({
       {/* Mini clavier pour les bornes */}
       <div>
         <Label className="text-sm font-medium mb-2 block">
-          Clavier numérique (pour les bornes)
+          Clavier numérique
         </Label>
-        <div className="grid grid-cols-4 gap-1">
+        <div className="grid grid-cols-4 gap-1 mb-2">
           {keyboardButtons.map((btn) => (
             <Button
               key={btn}
@@ -75,6 +83,24 @@ export const IntegralControls = ({
               onClick={() => onKeyboardInput(btn)}
             >
               {btn}
+            </Button>
+          ))}
+        </div>
+        
+        {/* Constantes mathématiques */}
+        <Label className="text-xs text-gray-600 mb-1 block">
+          Constantes mathématiques
+        </Label>
+        <div className="grid grid-cols-3 gap-1">
+          {constantButtons.map((constant) => (
+            <Button
+              key={constant.label}
+              variant="outline"
+              size="sm"
+              className="h-8 text-xs font-medium bg-indigo-50 hover:bg-indigo-100 border-indigo-200"
+              onClick={() => onKeyboardInput(constant.value)}
+            >
+              {constant.label}
             </Button>
           ))}
         </div>
@@ -89,7 +115,7 @@ export const IntegralControls = ({
           value={[rectangleCount]}
           onValueChange={(value) => onRectangleCountChange(value[0])}
           min={5}
-          max={10000}
+          max={1000}
           step={5}
           className="mt-2"
         />
