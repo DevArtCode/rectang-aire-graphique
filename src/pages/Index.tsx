@@ -12,6 +12,31 @@ const Index = () => {
   const [upperBound, setUpperBound] = useState(2);
   const [rectangleCount, setRectangleCount] = useState(20);
   const [integralValue, setIntegralValue] = useState(0);
+  const [activeInput, setActiveInput] = useState<'none' | 'lower' | 'upper'>('none');
+
+  const handleKeyboardInput = (value: string) => {
+    if (activeInput === 'lower') {
+      if (value === '-') {
+        setLowerBound(prev => -Math.abs(prev));
+      } else {
+        const newValue = lowerBound.toString() + value;
+        const parsed = parseFloat(newValue);
+        if (!isNaN(parsed)) {
+          setLowerBound(parsed);
+        }
+      }
+    } else if (activeInput === 'upper') {
+      if (value === '-') {
+        setUpperBound(prev => -Math.abs(prev));
+      } else {
+        const newValue = upperBound.toString() + value;
+        const parsed = parseFloat(newValue);
+        if (!isNaN(parsed)) {
+          setUpperBound(parsed);
+        }
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -24,7 +49,7 @@ const Index = () => {
             </h1>
           </div>
           <p className="text-gray-600 text-lg">
-            Méthode des rectangles avec visualisation graphique
+            Méthode des rectangles avec visualisation graphique (jusqu'à 10 000 rectangles)
           </p>
         </header>
 
@@ -83,6 +108,7 @@ const Index = () => {
                 onLowerBoundChange={setLowerBound}
                 onUpperBoundChange={setUpperBound}
                 onRectangleCountChange={setRectangleCount}
+                onKeyboardInput={handleKeyboardInput}
               />
             </div>
           </div>

@@ -25,7 +25,7 @@ export const MathGraph = ({
   const generateGraphData = useMemo(() => {
     const data = [];
     const range = 8; // Plage de -4 à 4 pour l'affichage
-    const steps = 400; // Plus de points pour une courbe lisse
+    const steps = 800; // Plus de points pour une courbe très lisse
     const stepSize = (2 * range) / steps;
 
     for (let i = 0; i <= steps; i++) {
@@ -33,7 +33,7 @@ export const MathGraph = ({
       try {
         const y = evaluateExpression(expression, x);
         if (isFinite(y)) {
-          data.push({ x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) });
+          data.push({ x: Number(x.toFixed(4)), y: Number(y.toFixed(4)) });
         }
       } catch (error) {
         // Ignorer les points où l'évaluation échoue
@@ -61,10 +61,10 @@ export const MathGraph = ({
           
           // Créer les points pour dessiner le rectangle
           rectangles.push(
-            { x: Number(x.toFixed(3)), rectangleHeight: 0, y: 0 },
-            { x: Number(x.toFixed(3)), rectangleHeight: Number(height.toFixed(3)), y: Number(height.toFixed(3)) },
-            { x: Number((x + width).toFixed(3)), rectangleHeight: Number(height.toFixed(3)), y: Number(height.toFixed(3)) },
-            { x: Number((x + width).toFixed(3)), rectangleHeight: 0, y: 0 }
+            { x: Number(x.toFixed(4)), rectangleHeight: 0, y: 0 },
+            { x: Number(x.toFixed(4)), rectangleHeight: Number(height.toFixed(4)), y: Number(height.toFixed(4)) },
+            { x: Number((x + width).toFixed(4)), rectangleHeight: Number(height.toFixed(4)), y: Number(height.toFixed(4)) },
+            { x: Number((x + width).toFixed(4)), rectangleHeight: 0, y: 0 }
           );
         }
       } catch (error) {
@@ -84,6 +84,26 @@ export const MathGraph = ({
     setRectangleData(generateRectangles);
   }, [generateRectangles]);
 
+  // Formatage personnalisé pour l'axe X avec plus de précision
+  const customXAxisTick = (tickProps: any) => {
+    const { x, y, payload } = tickProps;
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text
+          x={0}
+          y={0}
+          dy={16}
+          textAnchor="middle"
+          fill="#6366f1"
+          fontSize="12"
+          fontWeight="500"
+        >
+          {Number(payload.value).toFixed(1)}
+        </text>
+      </g>
+    );
+  };
+
   return (
     <div className="w-full h-96">
       <ResponsiveContainer width="100%" height="100%">
@@ -97,7 +117,8 @@ export const MathGraph = ({
             type="number" 
             scale="linear"
             domain={[-4, 4]}
-            tickCount={9}
+            tickCount={17}
+            tick={customXAxisTick}
             stroke="#6366f1"
           />
           <YAxis 
@@ -105,6 +126,7 @@ export const MathGraph = ({
             domain={[-10, 10]}
             tickCount={11}
             stroke="#6366f1"
+            tick={{ fontSize: 12, fontWeight: 500 }}
           />
           
           {/* Lignes de référence pour les axes */}
@@ -121,7 +143,7 @@ export const MathGraph = ({
             dataKey="rectangleHeight"
             stroke="#8b5cf6"
             fill="#8b5cf6"
-            fillOpacity={0.3}
+            fillOpacity={0.4}
             strokeWidth={1}
           />
           
@@ -144,7 +166,7 @@ export const MathGraph = ({
         </p>
         <p className="mt-1">
           <span className="inline-block w-4 h-2 bg-purple-500 opacity-50 mr-2"></span>
-          Approximation par {rectangleCount} rectangles
+          Approximation par {rectangleCount.toLocaleString()} rectangles
         </p>
       </div>
     </div>

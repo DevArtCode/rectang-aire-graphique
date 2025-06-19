@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface IntegralControlsProps {
   lowerBound: number;
@@ -12,6 +13,7 @@ interface IntegralControlsProps {
   onLowerBoundChange: (value: number) => void;
   onUpperBoundChange: (value: number) => void;
   onRectangleCountChange: (value: number) => void;
+  onKeyboardInput: (value: string) => void;
 }
 
 export const IntegralControls = ({
@@ -22,7 +24,10 @@ export const IntegralControls = ({
   onLowerBoundChange,
   onUpperBoundChange,
   onRectangleCountChange,
+  onKeyboardInput,
 }: IntegralControlsProps) => {
+  const keyboardButtons = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", ".", "-"];
+
   return (
     <div className="space-y-6">
       {/* Bornes d'intégration */}
@@ -55,6 +60,26 @@ export const IntegralControls = ({
         </div>
       </div>
 
+      {/* Mini clavier pour les bornes */}
+      <div>
+        <Label className="text-sm font-medium mb-2 block">
+          Clavier numérique (pour les bornes)
+        </Label>
+        <div className="grid grid-cols-4 gap-1">
+          {keyboardButtons.map((btn) => (
+            <Button
+              key={btn}
+              variant="outline"
+              size="sm"
+              className="h-8 text-xs"
+              onClick={() => onKeyboardInput(btn)}
+            >
+              {btn}
+            </Button>
+          ))}
+        </div>
+      </div>
+
       {/* Nombre de rectangles */}
       <div>
         <Label className="text-sm font-medium">
@@ -64,7 +89,7 @@ export const IntegralControls = ({
           value={[rectangleCount]}
           onValueChange={(value) => onRectangleCountChange(value[0])}
           min={5}
-          max={200}
+          max={10000}
           step={5}
           className="mt-2"
         />
